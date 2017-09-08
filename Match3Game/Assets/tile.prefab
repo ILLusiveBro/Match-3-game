@@ -20,7 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4412471364031832}
   - component: {fileID: 212664075340950528}
-  - component: {fileID: 114936371528297084}
+  - component: {fileID: 114973904294791518}
+  - component: {fileID: 61914784476304788}
   m_Layer: 0
   m_Name: tile
   m_TagString: Tiles
@@ -41,7 +42,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114936371528297084
+--- !u!61 &61914784476304788
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1808242570502850}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.28, y: 1.28}
+  m_EdgeRadius: 0
+--- !u!114 &114973904294791518
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -49,9 +75,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1808242570502850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a56b16213d0fd5249a193b16809e2eb9, type: 3}
+  m_Script: {fileID: 11500000, guid: f4eaacd7924c52b458fcf40d6405f1b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileTransofrm: {fileID: 0}
+  highlightScale: 0.1
 --- !u!212 &212664075340950528
 SpriteRenderer:
   m_ObjectHideFlags: 1
