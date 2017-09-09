@@ -20,8 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4412471364031832}
   - component: {fileID: 212664075340950528}
-  - component: {fileID: 114973904294791518}
   - component: {fileID: 61914784476304788}
+  - component: {fileID: 114380623740168456}
+  - component: {fileID: 111059713933437978}
   m_Layer: 0
   m_Name: tile
   m_TagString: Tiles
@@ -67,7 +68,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.28, y: 1.28}
   m_EdgeRadius: 0
---- !u!114 &114973904294791518
+--- !u!111 &111059713933437978
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1808242570502850}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 0eb18a432df607d43874f90b96d65916, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 0eb18a432df607d43874f90b96d65916, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!114 &114380623740168456
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -78,8 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4eaacd7924c52b458fcf40d6405f1b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileTransofrm: {fileID: 0}
-  highlightScale: 0.1
+  highlightScale: 0.2
+  noMathces: {fileID: 0}
 --- !u!212 &212664075340950528
 SpriteRenderer:
   m_ObjectHideFlags: 1
