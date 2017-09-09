@@ -13,13 +13,13 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Screen.SetResolution(600, 800, false);
-
         sprites.Add(spriteGreen);
         sprites.Add(spriteBlue);
         sprites.Add(spritePurple);
         sprites.Add(spriteRed);
-        sprites.Add(spriteOrange);   
-        foreach(var tiles in GameObject.FindGameObjectsWithTag("Tiles"))
+        sprites.Add(spriteOrange);
+        var tilesList = GameObject.FindGameObjectsWithTag("Tiles");
+        foreach (var tiles in tilesList)
         {         
             tiles.GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0,sprites.Count)];
         }

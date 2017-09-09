@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class tileSelection : MonoBehaviour
-{
+public class tileMovement : MonoBehaviour {
+
     static Tile selectedTile = new Tile();
     static Tile secondTile = new Tile();
     public float highlightScale = 1.1f;
