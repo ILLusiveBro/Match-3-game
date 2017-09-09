@@ -5,6 +5,8 @@ public class tileMovement : MonoBehaviour
     static Tile selectedTile = new Tile();
     static Tile secondTile = new Tile();
     public float highlightScale = 1.1f;
+    bool matched = false;
+    bool swap = false;
 
     public class Tile
     {
@@ -39,7 +41,7 @@ public class tileMovement : MonoBehaviour
             || (Mathf.Abs(selectedTile.tilePosition.y - y) < 1.6f && Mathf.Abs(x - selectedTile.tilePosition.x) < 0.1f)))
         {
             Select(secondTile);
-            Swap();
+            swap = true;
         }
         else
         {
@@ -47,12 +49,30 @@ public class tileMovement : MonoBehaviour
         }
     }
 
-    private void Swap()
+    void Update()
     {
-        Tile temp = selectedTile;
-        GameObject.Find(selectedTile.name).transform.position = Vector3.MoveTowards(selectedTile.tilePosition, secondTile.tilePosition, 1.5f);
-        GameObject.Find(secondTile.name).transform.position = Vector3.MoveTowards(temp.tilePosition, temp.tilePosition, 1.5f);
-        Deselect(selectedTile);
-        Deselect(secondTile);
+        if (swap)
+        {
+            GameObject.Find(selectedTile.name).transform.position = Vector3.MoveTowards(selectedTile.tilePosition, secondTile.tilePosition, 100 * Time.deltaTime);
+            GameObject.Find(secondTile.name).transform.position = Vector3.MoveTowards(secondTile.tilePosition, selectedTile.tilePosition, 100 * Time.deltaTime);
+            selectedTile.tilePosition = GameObject.Find(selectedTile.name).transform.position;
+            secondTile.tilePosition = GameObject.Find(secondTile.name).transform.position;
+            if (matched)
+            {
+
+            }
+            else
+            {
+                Animation selectedAnimation = GameObject.Find(selectedTile.name).GetComponent<Animation>();
+                Animation secondAnimation = GameObject.Find(secondTile.name).GetComponent<Animation>();
+                selectedAnimation.Play();
+                secondAnimation.Play();
+                GameObject.Find(secondTile.name).transform.position = Vector3.MoveTowards(secondTile.tilePosition, selectedTile.tilePosition, 100 * Time.deltaTime);
+                GameObject.Find(selectedTile.name).transform.position = Vector3.MoveTowards(selectedTile.tilePosition, secondTile.tilePosition, 100 * Time.deltaTime);
+            }
+            Deselect(selectedTile);
+            Deselect(secondTile);
+            swap = false;
+        }
     }
 }

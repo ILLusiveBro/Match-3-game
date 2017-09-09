@@ -405,6 +405,11 @@ Prefab:
       propertyPath: m_TagString
       value: Tiles
       objectReference: {fileID: 0}
+    - target: {fileID: 114380623740168456, guid: 0e4e1afb224801a4db94d6aac3cd9ea1,
+        type: 2}
+      propertyPath: highlightScale
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e4e1afb224801a4db94d6aac3cd9ea1, type: 2}
   m_IsPrefabParent: 0
@@ -1131,6 +1136,22 @@ Prefab:
     - target: {fileID: 1808242570502850, guid: 0e4e1afb224801a4db94d6aac3cd9ea1, type: 2}
       propertyPath: m_TagString
       value: Tiles
+      objectReference: {fileID: 0}
+    - target: {fileID: 1808242570502850, guid: 0e4e1afb224801a4db94d6aac3cd9ea1, type: 2}
+      propertyPath: m_Name
+      value: tile (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412471364031832, guid: 0e4e1afb224801a4db94d6aac3cd9ea1, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412471364031832, guid: 0e4e1afb224801a4db94d6aac3cd9ea1, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412471364031832, guid: 0e4e1afb224801a4db94d6aac3cd9ea1, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e4e1afb224801a4db94d6aac3cd9ea1, type: 2}
@@ -1975,6 +1996,28 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e4e1afb224801a4db94d6aac3cd9ea1, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1964558120 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1808242570502850, guid: 0e4e1afb224801a4db94d6aac3cd9ea1,
+    type: 2}
+  m_PrefabInternal: {fileID: 1010882025}
+--- !u!95 &1964558125
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1964558120}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 56172385ab5376346bf3274dfd7cd1a0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &2071540269
 GameObject:
   m_ObjectHideFlags: 0

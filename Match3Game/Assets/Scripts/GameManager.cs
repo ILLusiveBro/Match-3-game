@@ -19,9 +19,9 @@ public class GameManager : MonoBehaviour
         sprites.Add(spriteRed);
         sprites.Add(spriteOrange);
         var tilesList = GameObject.FindGameObjectsWithTag("Tiles");
-        foreach (var tiles in tilesList)
+        foreach (var tile in tilesList)
         {         
-            tiles.GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0,sprites.Count)];
+            tile.GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0,sprites.Count)];
         }
     }
 }
