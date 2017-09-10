@@ -10,18 +10,11 @@ public class GameManager : MonoBehaviour
     public Sprite spriteOrange;
     List<Sprite> sprites = new List<Sprite>();
 
-    void Start()
+    public void TileColorGeneration(List<GameObject> tilesList)
     {
-        Screen.SetResolution(600, 800, false);
-        sprites.Add(spriteGreen);
-        sprites.Add(spriteBlue);
-        sprites.Add(spritePurple);
-        sprites.Add(spriteRed);
-        sprites.Add(spriteOrange);
-        var tilesList = GameObject.FindGameObjectsWithTag("Tiles");
         foreach (var tile in tilesList)
-        {         
-            switch(Random.Range(0, sprites.Count))
+        {
+            switch (Random.Range(0, sprites.Count))
             {
                 case 0:
                     tile.GetComponent<SpriteRenderer>().sprite = sprites[0];
@@ -44,7 +37,25 @@ public class GameManager : MonoBehaviour
                     tile.tag = "Orange";
                     break;
             }
-            
+
         }
+    }
+
+    void Start()
+    {
+        Screen.SetResolution(600, 800, false);
+        sprites.Add(spriteGreen);
+        sprites.Add(spriteBlue);
+        sprites.Add(spritePurple);
+        sprites.Add(spriteRed);
+        sprites.Add(spriteOrange);
+        List<GameObject> tiles = new List<GameObject>();
+        var tilesList = GameObject.FindGameObjectsWithTag("Tiles");
+        foreach (var tile in tilesList)
+        {
+            tiles.Add(tile);
+        }
+        TileColorGeneration(tiles);
+       
     }
 }

@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114380623740168456}
   - component: {fileID: 111059713933437978}
   - component: {fileID: 65931910430474770}
+  - component: {fileID: 95724620074698962}
   m_Layer: 0
   m_Name: tile
   m_TagString: Tiles
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1808242570502850}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.98, y: 3.71, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -55,6 +56,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.28, y: 1.28, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &95724620074698962
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1808242570502850}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 56172385ab5376346bf3274dfd7cd1a0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!111 &111059713933437978
 Animation:
   m_ObjectHideFlags: 1
@@ -66,6 +84,7 @@ Animation:
   m_Animation: {fileID: 7400000, guid: 0eb18a432df607d43874f90b96d65916, type: 2}
   m_Animations:
   - {fileID: 7400000, guid: 0eb18a432df607d43874f90b96d65916, type: 2}
+  - {fileID: 7400000, guid: 6b58078e15f13e04b8b81789af5cfb2c, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0

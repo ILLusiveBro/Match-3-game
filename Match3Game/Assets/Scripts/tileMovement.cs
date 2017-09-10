@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System.Collections.Generic;
 public class tileMovement : MonoBehaviour
 {
     static Tile selectedTile = new Tile();
@@ -7,11 +7,19 @@ public class tileMovement : MonoBehaviour
     public float highlightScale = 1.1f;
     bool swap = false;
     int counter = 1;
+    List<GameObject> destroyedTiles = new List<GameObject>();
 
     public class Tile
     {
         public Vector3 tilePosition = new Vector3();
         public string name;
+    }
+
+    void Select(Tile tile)
+    {
+        tile.tilePosition = transform.position;
+        tile.name = transform.name;
+        GameObject.Find(tile.name).transform.localScale += new Vector3(highlightScale, highlightScale, 0);
     }
 
     void Deselect(Tile tile)
@@ -21,11 +29,26 @@ public class tileMovement : MonoBehaviour
         tile.name = null;
     }
 
-    void Select(Tile tile)
+    void CreateNewTiles()
     {
-        tile.tilePosition = transform.position;
-        tile.name = transform.name;
-        GameObject.Find(tile.name).transform.localScale += new Vector3(highlightScale, highlightScale, 0);
+        foreach (var tile in destroyedTiles)
+        {
+            tile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
+
+            RaycastHit hit;
+
+            while (Physics.Raycast(tile.transform.position, Vector2.up, out hit, 1.5f))
+            {
+                var temp = hit.collider.transform.position;
+                hit.collider.transform.position = tile.transform.position;
+                tile.transform.position = temp;
+                FindObjectOfType<GameManager>().TileColorGeneration(destroyedTiles);
+            }
+
+            tile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
+            tile.GetComponent<Animation>().Play("blockCreation");
+            tile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        }
     }
 
     void OnMouseDown()
@@ -59,11 +82,11 @@ public class tileMovement : MonoBehaviour
             secondTile.tilePosition = GameObject.Find(secondTile.name).transform.position;
             if (MatchSearch(selectedTile,true) || MatchSearch(secondTile,true))
             {
-                Debug.Log("Vertical tiles match!");
+                CreateNewTiles();
             }
             else if(MatchSearch(selectedTile, false) || MatchSearch(secondTile, false))
             {
-                Debug.Log("Horizontal tiles match!");
+                CreateNewTiles();
             }
             else
             {
@@ -82,6 +105,7 @@ public class tileMovement : MonoBehaviour
 
     bool MatchSearch(Tile tile, bool vertical)
     {
+        destroyedTiles.Clear();
         Vector2 currenTile = tile.tilePosition;
         Vector2 originalTile = tile.tilePosition;
         RaycastHit hitForward;
@@ -101,6 +125,7 @@ public class tileMovement : MonoBehaviour
         Physics.Raycast(currenTile, backwardDirection, out hitBackward, 1.5f);
         Physics.Raycast(originalTile, forwardDirection, out hitForward, 1.5f);
         var tag = GameObject.Find(tile.name).tag;
+        destroyedTiles.Add(GameObject.Find(tile.name));
         bool firstLoop = true;
         while (hitForward.collider != null || firstLoop)
         {            
@@ -109,8 +134,9 @@ public class tileMovement : MonoBehaviour
             {
                 if (hitBackward.collider.tag == tag)
                 {
-                    counter++;
+                    counter++;                   
                     currenTile = hitBackward.collider.transform.position;
+                    destroyedTiles.Add(hitBackward.collider.gameObject);
                     Physics.Raycast(currenTile, backwardDirection, out hitBackward, 1.5f);
                 }
                 else break;              
@@ -120,6 +146,7 @@ public class tileMovement : MonoBehaviour
             {
                 originalTile = hitForward.collider.transform.position;
                 counter++;
+                destroyedTiles.Add(hitForward.collider.gameObject);
                 Physics.Raycast(originalTile, forwardDirection, out hitForward, 1.5f);
             }     
             else break;
