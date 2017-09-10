@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Tiles
+  - Green
+  - Blue
+  - Purple
+  - Red
+  - Orange
   layers:
   - Default
   - TransparentFX

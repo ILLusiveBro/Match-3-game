@@ -21,7 +21,30 @@ public class GameManager : MonoBehaviour
         var tilesList = GameObject.FindGameObjectsWithTag("Tiles");
         foreach (var tile in tilesList)
         {         
-            tile.GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0,sprites.Count)];
+            switch(Random.Range(0, sprites.Count))
+            {
+                case 0:
+                    tile.GetComponent<SpriteRenderer>().sprite = sprites[0];
+                    tile.tag = "Green";
+                    break;
+                case 1:
+                    tile.GetComponent<SpriteRenderer>().sprite = sprites[1];
+                    tile.tag = "Blue";
+                    break;
+                case 2:
+                    tile.GetComponent<SpriteRenderer>().sprite = sprites[2];
+                    tile.tag = "Purple";
+                    break;
+                case 3:
+                    tile.GetComponent<SpriteRenderer>().sprite = sprites[3];
+                    tile.tag = "Red";
+                    break;
+                case 4:
+                    tile.GetComponent<SpriteRenderer>().sprite = sprites[4];
+                    tile.tag = "Orange";
+                    break;
+            }
+            
         }
     }
 }

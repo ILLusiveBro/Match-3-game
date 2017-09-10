@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4412471364031832}
   - component: {fileID: 212664075340950528}
-  - component: {fileID: 61914784476304788}
   - component: {fileID: 114380623740168456}
   - component: {fileID: 111059713933437978}
+  - component: {fileID: 65931910430474770}
   m_Layer: 0
   m_Name: tile
   m_TagString: Tiles
@@ -43,31 +43,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61914784476304788
-BoxCollider2D:
+--- !u!65 &65931910430474770
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1808242570502850}
-  m_Enabled: 1
-  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
-    newSize: {x: 1.28, y: 1.28}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.28, y: 1.28}
-  m_EdgeRadius: 0
+  m_Size: {x: 1.28, y: 1.28, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!111 &111059713933437978
 Animation:
   m_ObjectHideFlags: 1
@@ -95,7 +82,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightScale: 0.2
-  noMathces: {fileID: 0}
 --- !u!212 &212664075340950528
 SpriteRenderer:
   m_ObjectHideFlags: 1

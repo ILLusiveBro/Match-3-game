@@ -5,8 +5,8 @@ public class tileMovement : MonoBehaviour
     static Tile selectedTile = new Tile();
     static Tile secondTile = new Tile();
     public float highlightScale = 1.1f;
-    bool matched = false;
     bool swap = false;
+    int counter = 1;
 
     public class Tile
     {
@@ -57,9 +57,13 @@ public class tileMovement : MonoBehaviour
             GameObject.Find(secondTile.name).transform.position = Vector3.MoveTowards(secondTile.tilePosition, selectedTile.tilePosition, 100 * Time.deltaTime);
             selectedTile.tilePosition = GameObject.Find(selectedTile.name).transform.position;
             secondTile.tilePosition = GameObject.Find(secondTile.name).transform.position;
-            if (matched)
+            if (MatchSearch(selectedTile,true) || MatchSearch(secondTile,true))
             {
-
+                Debug.Log("Vertical tiles match!");
+            }
+            else if(MatchSearch(selectedTile, false) || MatchSearch(secondTile, false))
+            {
+                Debug.Log("Horizontal tiles match!");
             }
             else
             {
@@ -73,6 +77,64 @@ public class tileMovement : MonoBehaviour
             Deselect(selectedTile);
             Deselect(secondTile);
             swap = false;
+        }
+    }
+
+    bool MatchSearch(Tile tile, bool vertical)
+    {
+        Vector2 currenTile = tile.tilePosition;
+        Vector2 originalTile = tile.tilePosition;
+        RaycastHit hitForward;
+        RaycastHit hitBackward;
+        Vector3 forwardDirection;
+        Vector3 backwardDirection;
+        if (vertical)
+        {
+            forwardDirection = Vector3.up;
+            backwardDirection = Vector3.down;
+        }
+        else
+        {
+            forwardDirection = Vector3.right;
+            backwardDirection = Vector3.left;
+        }
+        Physics.Raycast(currenTile, backwardDirection, out hitBackward, 1.5f);
+        Physics.Raycast(originalTile, forwardDirection, out hitForward, 1.5f);
+        var tag = GameObject.Find(tile.name).tag;
+        bool firstLoop = true;
+        while (hitForward.collider != null || firstLoop)
+        {            
+            firstLoop = false;
+            while (hitBackward.collider != null )
+            {
+                if (hitBackward.collider.tag == tag)
+                {
+                    counter++;
+                    currenTile = hitBackward.collider.transform.position;
+                    Physics.Raycast(currenTile, backwardDirection, out hitBackward, 1.5f);
+                }
+                else break;              
+            }         
+
+            if(hitForward.collider != null && hitForward.collider.tag == tag)
+            {
+                originalTile = hitForward.collider.transform.position;
+                counter++;
+                Physics.Raycast(originalTile, forwardDirection, out hitForward, 1.5f);
+            }     
+            else break;
+        }
+
+        if (counter >= 3)
+        {
+            counter = 1;
+            return true;
+        }
+        else
+        {
+            counter = 1;
+            return false;
+
         }
     }
 }
