@@ -7,6 +7,8 @@ public class tileMovement : MonoBehaviour
     public float highlightScale = 1.1f;
     bool swap = false;
     int counter = 1;
+    public static int score = 0;
+    public static bool inputEnabled = true;
     List<GameObject> destroyedTiles = new List<GameObject>();
 
     public class Tile
@@ -53,22 +55,25 @@ public class tileMovement : MonoBehaviour
 
     void OnMouseDown()
     {
-        float x = transform.position.x;
-        float y = transform.position.y;
-        if (selectedTile.name == null)
+        if(inputEnabled)
         {
-            Select(selectedTile);
-        }
-        else if (selectedTile.tilePosition != transform.position
-            && ((Mathf.Abs(selectedTile.tilePosition.x - x) < 1.6f && Mathf.Abs(y - selectedTile.tilePosition.y) < 0.1f)
-            || (Mathf.Abs(selectedTile.tilePosition.y - y) < 1.6f && Mathf.Abs(x - selectedTile.tilePosition.x) < 0.1f)))
-        {
-            Select(secondTile);
-            swap = true;
-        }
-        else
-        {
-            Deselect(selectedTile);
+            float x = transform.position.x;
+            float y = transform.position.y;
+            if (selectedTile.name == null)
+            {
+                Select(selectedTile);
+            }
+            else if (selectedTile.tilePosition != transform.position
+                && ((Mathf.Abs(selectedTile.tilePosition.x - x) < 1.6f && Mathf.Abs(y - selectedTile.tilePosition.y) < 0.1f)
+                || (Mathf.Abs(selectedTile.tilePosition.y - y) < 1.6f && Mathf.Abs(x - selectedTile.tilePosition.x) < 0.1f)))
+            {
+                Select(secondTile);
+                swap = true;
+            }
+            else
+            {
+                Deselect(selectedTile);
+            }
         }
     }
 
@@ -80,11 +85,11 @@ public class tileMovement : MonoBehaviour
             GameObject.Find(secondTile.name).transform.position = Vector3.MoveTowards(secondTile.tilePosition, selectedTile.tilePosition, 100 * Time.deltaTime);
             selectedTile.tilePosition = GameObject.Find(selectedTile.name).transform.position;
             secondTile.tilePosition = GameObject.Find(secondTile.name).transform.position;
-            if (MatchSearch(selectedTile,true) || MatchSearch(secondTile,true))
+            if (MatchSearch(selectedTile, true) || MatchSearch(secondTile, true))
             {
                 CreateNewTiles();
             }
-            else if(MatchSearch(selectedTile, false) || MatchSearch(secondTile, false))
+            else if (MatchSearch(selectedTile, false) || MatchSearch(secondTile, false))
             {
                 CreateNewTiles();
             }
@@ -128,32 +133,40 @@ public class tileMovement : MonoBehaviour
         destroyedTiles.Add(GameObject.Find(tile.name));
         bool firstLoop = true;
         while (hitForward.collider != null || firstLoop)
-        {            
+        {
             firstLoop = false;
-            while (hitBackward.collider != null )
+            while (hitBackward.collider != null)
             {
                 if (hitBackward.collider.tag == tag)
                 {
-                    counter++;                   
+                    counter++;
                     currenTile = hitBackward.collider.transform.position;
                     destroyedTiles.Add(hitBackward.collider.gameObject);
                     Physics.Raycast(currenTile, backwardDirection, out hitBackward, 1.5f);
                 }
-                else break;              
-            }         
+                else break;
+            }
 
-            if(hitForward.collider != null && hitForward.collider.tag == tag)
+            if (hitForward.collider != null && hitForward.collider.tag == tag)
             {
                 originalTile = hitForward.collider.transform.position;
                 counter++;
                 destroyedTiles.Add(hitForward.collider.gameObject);
                 Physics.Raycast(originalTile, forwardDirection, out hitForward, 1.5f);
-            }     
+            }
             else break;
         }
 
         if (counter >= 3)
         {
+            if (counter == 3)
+                score += 100;
+            else if (counter == 4)
+                score += 300;
+            else
+            {
+                score += 1000 + (500 * (counter - 5));
+            }               
             counter = 1;
             return true;
         }
