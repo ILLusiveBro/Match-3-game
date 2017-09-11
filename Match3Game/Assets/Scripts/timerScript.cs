@@ -8,6 +8,7 @@ public class timerScript : MonoBehaviour
     Time time;
     float seconds = 0;
     int minutes = 0;
+    bool gameEnded = false;
     void Start()
     {
         minutes = (timeSeconds / 60);
@@ -17,21 +18,21 @@ public class timerScript : MonoBehaviour
 
     void Update()
     {
+        if(!gameEnded)
         timeText.text = (minutes.ToString() + ":" + seconds.ToString("00"));
         seconds -= Time.deltaTime;
-        if (seconds < 1)
+        if (seconds < 1 && !gameEnded)
         {
             if (minutes == 0 && seconds < 1)
             {
-                tileMovement.inputEnabled = false;
-                Score.RecordHighScore();
-                //UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+                gameEnded = true;
+                timeText.text = "0:00";
+                FindObjectOfType<GameManager>().EndGame();              
             }
             else
             {
                 minutes--;
                 seconds = 59;
-                Debug.Log(minutes.ToString());
             }
         }
     }
