@@ -15,23 +15,48 @@ public class GameManager : MonoBehaviour
     public Text finalScoreText;
     public Text highScoreText;
     static int highScore;
+    bool gamePaused = false;
+
+    public void PauseGame()
+    {
+        if (gamePaused)
+        {
+            Time.timeScale = 1;
+            gamePaused = false;
+        }         
+        else
+        {
+            Time.timeScale = 0;
+            gamePaused = true;
+        }        
+    }
+
+    public void LoadGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+    }
+
+    public void LoadMenu()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
 
 
     public void EndGame()
     {
         tileMovement.inputEnabled = false;
         levelCompleteUI.GetComponent<Animation>().Play();
-        highScore = PlayerPrefs.GetInt("HighScore");
         RecordHighScore();
         finalScoreText.text = "Your score: " + tileMovement.score.ToString();
+        highScore = PlayerPrefs.GetInt("HighScore");
         highScoreText.text = "Highest score: " + highScore.ToString();
         levelCompleteUI.SetActive(true);
-        //UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        
     }
 
     public static void RecordHighScore()
     {
-        if (tileMovement.score > highScore)
+        if (tileMovement.score > PlayerPrefs.GetInt("HighScore"))
             PlayerPrefs.SetInt("HighScore", tileMovement.score);
     }
 
@@ -100,6 +125,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        var listener = GameObject.Find("soundListener");
+        DontDestroyOnLoad(listener);
+        tileMovement.score = 0;
         Screen.SetResolution(600, 800, false);
         sprites.Add(spriteGreen);
         sprites.Add(spriteBlue);
