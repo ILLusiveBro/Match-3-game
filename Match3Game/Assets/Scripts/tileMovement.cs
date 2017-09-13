@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 
 public class tileMovement : MonoBehaviour
 {
@@ -30,24 +32,12 @@ public class tileMovement : MonoBehaviour
         tile.name = null;
     }
 
-    void CreateNewTiles(List<GameObject> destroyedTiles)
+    IEnumerator ExecuteAfterTime(float time)
     {
-        foreach (var tile in destroyedTiles)
-        {
-            tile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
-            FindObjectOfType<GameManager>().TileColorGeneration(destroyedTiles);
-            RaycastHit hit;
-            if (Physics.Raycast(tile.transform.position, Vector2.up, out hit, 1.5f)) // Prevent top tile from disappearing 
-            while (Physics.Raycast(tile.transform.position, Vector2.up, out hit, 1.5f))
-            {
-                var temp = hit.collider.transform.position;
-                hit.collider.transform.position = tile.transform.position;
-                tile.transform.position = temp;               
-            } 
-            tile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
-            tile.GetComponent<Animation>().Play("blockCreation");
-            tile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-        }
+        inputEnabled = false;
+        yield return new WaitForSeconds(time);
+        while (FindAllMatches()) ;
+        inputEnabled = true;
     }
 
     void OnMouseDown()
@@ -81,14 +71,14 @@ public class tileMovement : MonoBehaviour
         GameObject.Find(secondTile.name).transform.position = Vector3.MoveTowards(secondTile.tilePosition, selectedTile.tilePosition, 100 * Time.deltaTime);
         selectedTile.tilePosition = GameObject.Find(selectedTile.name).transform.position;
         secondTile.tilePosition = GameObject.Find(secondTile.name).transform.position;
+        Animation selectedAnimation = GameObject.Find(selectedTile.name).GetComponent<Animation>();
+        Animation secondAnimation = GameObject.Find(secondTile.name).GetComponent<Animation>();
         if (MatchSearch(selectedTile, destroyedTiles) | MatchSearch(secondTile, destroyedTiles))
         {
             CreateNewTiles(destroyedTiles);
         }
         else
         {
-            Animation selectedAnimation = GameObject.Find(selectedTile.name).GetComponent<Animation>();
-            Animation secondAnimation = GameObject.Find(secondTile.name).GetComponent<Animation>();
             selectedAnimation.Play();
             secondAnimation.Play();
             GameObject.Find(secondTile.name).transform.position = Vector3.MoveTowards(secondTile.tilePosition, selectedTile.tilePosition, 100 * Time.deltaTime);
@@ -97,6 +87,65 @@ public class tileMovement : MonoBehaviour
         Deselect(selectedTile);
         Deselect(secondTile);
         destroyedTiles.Clear();
+    }
+
+    void CreateNewTiles(List<GameObject> destroyedTiles)
+    {
+        var newTiles = new List<Tile>();
+        foreach (var tile in destroyedTiles)
+        {
+            tile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
+            FindObjectOfType<GameManager>().ColorChange(destroyedTiles);
+            RaycastHit hit;
+            if (Physics.Raycast(tile.transform.position, Vector2.up, out hit, 1.5f)) // Prevent top tile from disappearing 
+                do
+                {
+                    var temp = hit.collider.transform.position;
+                    hit.collider.transform.position = tile.transform.position;
+                    tile.transform.position = temp;
+                    Tile test = new Tile();
+                    test.name = hit.collider.name;
+                    test.tilePosition = hit.collider.transform.position;
+                    newTiles.Add(test);
+                } while (Physics.Raycast(tile.transform.position, Vector2.up, out hit, 1.5f));
+            if (!GameManager.firstGeneration)
+            {
+                tile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
+                var animation = tile.GetComponent<Animation>();
+                tile.GetComponent<Animation>().Play("blockCreation");
+                StartCoroutine(ExecuteAfterTime(animation["blockCreation"].length));
+            }
+            tile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        }
+    }
+
+    public bool FindAllMatches()
+    {
+        bool status = false;
+        var gameObjects = FindObjectsOfType<GameObject>();
+        var allTiles = new List<GameObject>();
+        for (var i = 0; i < gameObjects.Length; i++)
+        {
+            if (gameObjects[i].name.Contains("tile"))
+            {
+                allTiles.Add(gameObjects[i]);
+            }
+        }
+        var matchedTiles = new List<GameObject>();
+        foreach (var item in allTiles)
+        {
+            Tile tile = new Tile();
+            tile.name = item.name;
+            tile.tilePosition = item.transform.position;
+            if (MatchSearch(tile, matchedTiles))
+            {
+                status = true;
+                CreateNewTiles(matchedTiles.Distinct().ToList());
+                matchedTiles.Clear();
+            }
+        }
+        matchedTiles.Clear();
+        return status;
     }
 
     public bool MatchSearch(Tile tile, List<GameObject> destroyedTiles)
@@ -116,8 +165,8 @@ public class tileMovement : MonoBehaviour
         else
         {
             destroyedTiles.Add(GameObject.Find(tile.name));
-            if(!GameManager.firstGeneration)
-            ScoreCalculation(counter);
+            if (!GameManager.firstGeneration)
+                ScoreCalculation(counter);
             return true;
         }
     }

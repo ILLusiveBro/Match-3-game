@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("HighScore", tileMovement.score);
     }
 
-    void ColorChange(List<GameObject> tilesList)
+    public void ColorChange(List<GameObject> tilesList)
     {
         foreach (var tile in tilesList)
         {           
@@ -90,28 +90,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void CheckForMatches(List<GameObject> tilesList)
-    {
-        List<GameObject> noMatches = new List<GameObject>();
-        foreach (var tile in tilesList)
-        {
-            tileMovement.Tile k = new tileMovement.Tile();
-            k.name = tile.name;
-            k.tilePosition = tile.transform.position;
-            FindObjectOfType<tileMovement>().MatchSearch(k, noMatches);
-        }
-        if(noMatches.Count > 2 && firstGeneration)
-        noMatches.RemoveAt(noMatches.Count - 1);
-        ColorChange(noMatches);
-    }
-
-    public void TileColorGeneration(List<GameObject> tilesList)
-    {
-        ColorChange(tilesList);
-        if (firstGeneration)  // Check for pre generated matches and delete them 
-        CheckForMatches(tilesList);
-    }
-
     List<GameObject> GetAllTiles()
     {
         List<GameObject> tilesList = new List<GameObject>();
@@ -124,11 +102,7 @@ public class GameManager : MonoBehaviour
     }
 
     void Start()
-    {
-        var listener = GameObject.Find("soundListener");
-        DontDestroyOnLoad(listener);
-        tileMovement.score = 0;
-        Screen.SetResolution(600, 800, false);
+    {      
         sprites.Add(spriteGreen);
         sprites.Add(spriteBlue);
         sprites.Add(spritePurple);
@@ -136,7 +110,9 @@ public class GameManager : MonoBehaviour
         sprites.Add(spriteOrange);
         List<GameObject> tilesList = new List<GameObject>();
         tilesList = GetAllTiles();
-        TileColorGeneration(tilesList);
+        ColorChange(tilesList);
+        FindObjectOfType<tileMovement>().FindAllMatches();
+        tileMovement.score = 0;
         firstGeneration = false;
     }
 }

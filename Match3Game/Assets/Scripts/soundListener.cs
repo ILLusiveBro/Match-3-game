@@ -2,9 +2,10 @@
 
 public class soundListener : MonoBehaviour {
 
-    void Start()
-    {        
-        AudioListener.volume = PlayerPrefs.GetFloat("soundStatus",0.5f);        
+    void Awake()
+    {
+        AudioListener.volume = PlayerPrefs.GetFloat("soundStatus",0.5f);
+        DontDestroyOnLoad(GameObject.Find("soundListener"));
     }
 
     public void SoundCountrol()
